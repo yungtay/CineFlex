@@ -1,0 +1,39 @@
+.select-film{
+    height: 110px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 24px;
+    font-weight: 400;
+
+    margin-top: 67px;
+}
+
+.films{
+    display:grid;
+    grid-template-columns: repeat(auto-fit, 145px);
+    grid-column-gap: 30px;
+    grid-row-gap: 11px;
+
+    justify-content: center;
+
+    padding: 0 5%;
+
+}
+
+.film{
+    width: 145px;
+    height: 209px;
+
+    border-radius: 3px;
+    box-shadow: 0px 2px 4px 2px rgba(0, 0, 0, 0.1);
+
+    padding: 8px;
+}
+
+.film img{
+    width: 129px;
+    height: 193px;
+}
