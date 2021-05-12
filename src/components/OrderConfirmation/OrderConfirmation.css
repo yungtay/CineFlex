@@ -1,0 +1,48 @@
+.message-success{
+    height: 80px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 24px;
+    font-weight: 700;
+    color: #247A6B;
+
+    margin-top: 67px;
+}
+
+.confirmation-name-session{
+    padding: 0 28px;
+}
+
+.confirmation-title, .confirmation-ticket, .confirmation-buyer{
+    font-size: 22px;
+
+    margin-bottom:42px;
+}
+
+.confirmation-buyer{
+    margin-bottom: 62px;
+}
+
+.subtitle{
+    font-size: 24px;
+}
+
+.home{
+    width: 225px;
+    height: 42px;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 3px;
+    background: #E8833A;
+
+    font-size: 18px;
+    color: white;
+
+    margin: auto;
+}

@@ -5,6 +5,7 @@ import NavBar from "./components/NavBar/NavBar"
 import FilmSelection from "./components/FilmSelection/FilmSelection"
 import SelectTime from "./components/SelectTime/SelectTime"
 import SelectSeat from "./components/SelectSeat/SelectSeat"
+import OrderConfirmation from "./components/OrderConfirmation/OrderConfirmation"
 
 export default function App() {
     return (
@@ -14,11 +15,14 @@ export default function App() {
           <Route path="/" exact>
             <FilmSelection />
           </Route>
-          <Route path="/selectTime" exact>
+          <Route path="/selectTime/:idSesson" exact>
             <SelectTime />
           </Route>
-          <Route path="/selectSeat" exact>
+          <Route path="/selectSeat/:idSesson" exact>
             <SelectSeat />
+          </Route>
+          <Route path="/orderConfirmation" exact>
+            <OrderConfirmation />
           </Route>
         </Switch>
       </BrowserRouter>
