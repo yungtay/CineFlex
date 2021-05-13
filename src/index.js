@@ -1,4 +1,5 @@
 import ReactDom from "react-dom"
+import { useState} from "react"
 import {BrowserRouter, Switch, Route} from "react-router-dom"
 import "./css/reset.css"
 import NavBar from "./components/NavBar/NavBar"
@@ -8,6 +9,7 @@ import SelectSeat from "./components/SelectSeat/SelectSeat"
 import OrderConfirmation from "./components/OrderConfirmation/OrderConfirmation"
 
 export default function App() {
+  const reservation = useState({ids: [], name: "", cpf:"", seat:[], movieTitle:"", date:"", session:""})
     return (
       <BrowserRouter>
         <NavBar />
@@ -19,10 +21,10 @@ export default function App() {
             <SelectTime />
           </Route>
           <Route path="/selectSeat/:idSesson" exact>
-            <SelectSeat />
+            <SelectSeat reservations={reservation} />
           </Route>
           <Route path="/orderConfirmation" exact>
-            <OrderConfirmation />
+            <OrderConfirmation reservations={reservation} />
           </Route>
         </Switch>
       </BrowserRouter>

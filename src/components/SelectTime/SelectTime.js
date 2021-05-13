@@ -10,8 +10,7 @@ export default function SelectTime() {
     useEffect(() => {
         const requisicao = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/cineflex/movies/${idSesson}/showtimes`)
         requisicao.then((resposta) => setSession({...resposta.data}))
-    },[])
-    console.log(session)
+    },[idSesson])
 
     if(session === null) return "Carregando"
     return (
@@ -26,7 +25,7 @@ export default function SelectTime() {
               <div className="schedules">
                 {p.showtimes.map((r) => (
                   <div key={r.id}>
-                    <Link to={`/selectSeat/${idSesson}`}>
+                    <Link to={`/selectSeat/${r.id}`}>
                       <div className="session">{r.name}</div>
                     </Link>
                   </div>
