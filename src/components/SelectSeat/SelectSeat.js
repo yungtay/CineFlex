@@ -18,7 +18,7 @@ export default function SelectSeat(props) {
         
     },[idSesson])
     
-    console.log(reservation)
+    //console.log(reservation)
 
     if (seat === null) return "Carregando";
 
@@ -57,32 +57,46 @@ export default function SelectSeat(props) {
             Indisponível
           </div>
         </div>
-        <div className="buyer-data">
-          <div className="buyer-name">
-            Nome do comprador:
-            <input
-              placeholder="Digite seu nome..."
-              onChange={(e) =>
-                setReservation({ ...reservation, name: e.target.value })
-              }
-            />
+
+        {reservation.seat.sort((a,b) => a - b).map((p,i) => (
+          <div className="buyer-data">
+            <div className="buyer-name">
+              Nome do comprador do Assento {p}:
+              <input
+                value={reservation.compradores.find((x) => x.idAssento === (seat.seats.find((w) => w.name === p).id)) ? reservation.compradores.find((x) => x.idAssento === (seat.seats.find((w) => w.name === p).id)).nome : ""}
+                key={`nome${p}`}
+                placeholder="Digite seu nome..."
+                onChange={(e) =>{
+                  const nomeExiste = reservation.compradores.find((x) => x.idAssento === (seat.seats.find((w) => w.name === p).id))
+                  if(nomeExiste){
+                    setReservation({...reservation, compradores: [...reservation.compradores.filter((p) => p.idAssento !== reservation.ids[i]), {...reservation.compradores[i] ,nome: e.target.value }]})
+                  } else {
+                    setReservation({ ...reservation, compradores: [...reservation.compradores, {idAssento:reservation.ids[i], nome: e.target.value}]})
+                  }
+                }}
+              />
+            </div>
+            <div className="buyer-cpf">
+              CPF do comprador do Assento {p}:
+              <input
+                value={reservation.compradores.find((x) => x.idAssento === (seat.seats.find((w) => w.name === p).id)) ? reservation.compradores.find((x) => x.idAssento === (seat.seats.find((w) => w.name === p).id)).cpf : ""}
+                key={`cpf${p}`}
+                placeholder="Digite seu CPF..."
+                onChange={(e) =>{
+                  const cpfExiste = reservation.compradores.find((x) => x.idAssento === (seat.seats.find((w) => w.name === p).id))
+                  if(cpfExiste){
+                    setReservation({...reservation, compradores: [...reservation.compradores.filter((p) => p.idAssento !== reservation.ids[i]), {...reservation.compradores[i] ,cpf: e.target.value }]})
+                  } else {
+                    setReservation({ ...reservation, compradores: [...reservation.compradores, {idAssento:reservation.ids[i], cpf: e.target.value}]})
+                  }
+                }}
+              />
+            </div>
           </div>
-          <div className="buyer-cpf">
-            CPF do comprador:
-            <input
-              placeholder="Digite seu CPF..."
-              onChange={(e) =>
-                setReservation({ ...reservation, cpf: e.target.value })
-              }
-            />
-          </div>
-        </div>
+        ))}
 
         <Link
-          to={{
-            pathname: "/orderConfirmation",
-            state: [reservation],
-          }}
+          to="/orderConfirmation"
         >
           <div onClick={sendRequestReservation} className="reserve-seats">
             Reservar Assento(s)
@@ -105,16 +119,25 @@ export default function SelectSeat(props) {
 
     function selectSeat(seatId, availableId, seat){
         if(reservation.ids.includes(seatId)){
-            setReservation({...reservation, ids: reservation.ids.filter((p) => p !== seatId), ids: reservation.seat.filter((r) => r !== seat)})
+          if(reservation.compradores.find((x) => x.idAssento === seatId) && (reservation.compradores.find((x) => x.idAssento === seatId).nome || reservation.compradores.find((x) => x.idAssento === seatId).cpf)){
+            const desejaApagar = window.confirm("Você irá remover o assento e apagar os dados, deseja continuar ?")
+            if(!desejaApagar) return 
+          }
+          setReservation({...reservation, ids: reservation.ids.filter((p) => p !== seatId), seat: reservation.seat.filter((r) => r !== seat), compradores: reservation.compradores.filter((f) => f.idAssento !== seatId)})
+            
         } else if(availableId) {
-            setReservation({...reservation, ids: [...reservation.ids,seatId], seat:[...reservation.seat, seat]})
+            setReservation({...reservation, ids: [...reservation.ids,seatId].sort((a,b) => a - b), seat:[...reservation.seat, seat]})
         } else {
             alert("Esse assento não está disponível")
         }
     }
 
     function sendRequestReservation() {
-      const request = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/cineflex/seats/book-many", reservation)
-      request.then((resposta) => console.log(resposta.data))
+      const dados = { ids: reservation.ids, compradores: reservation.compradores }
+      console.log(dados)
+      const request = axios.post(
+        "https://mock-api.bootcamp.respondeai.com.br/api/v2/cineflex/seats/book-many", dados
+      );
+      request.then((resposta) => alert(`Pedido Efetuado ! ${resposta.data}` ));
     }
 }

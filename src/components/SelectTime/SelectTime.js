@@ -3,13 +3,15 @@ import {Link} from "react-router-dom"
 import {useParams} from "react-router-dom"
 import {useState, useEffect} from "react"
 import axios from "axios"
-export default function SelectTime() {
+export default function SelectTime(props) {
+  const {reservations: [reservation,setReservation]} = props
   const {idSesson} = useParams()
   const [session,setSession] =  useState(null)
 
     useEffect(() => {
         const requisicao = axios.get(`https://mock-api.bootcamp.respondeai.com.br/api/v2/cineflex/movies/${idSesson}/showtimes`)
         requisicao.then((resposta) => setSession({...resposta.data}))
+        setReservation({ids: [], name: "", cpf:"", seat:[], movieTitle:"", date:"", session:"", compradores:[]})
     },[idSesson])
 
     if(session === null) return "Carregando"
